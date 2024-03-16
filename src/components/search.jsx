@@ -67,19 +67,19 @@ function search() {
 
   return (
     <>
-      <span className="flex flex-row border-4 border-header justify-stretch">
+      <span className="flex flex-row gap-4 justify-stretch">
         <input
           type="text"
           id="search"
           value={link}
           onChange={(e) => setLink(e.target.value)}
-          className="w-full p-2"
+          className="w-full p-2 rounded-md focus:outline-none bg-zinc-100 text-zinc-800"
           placeholder="Ingrese el link de youtube"
         />
         <button
           type="button"
           onClick={postMusic}
-          className="font-bold text-sm text-zinc-200 px-3 flex justify-center items-center bg-header"
+          className="font-bold text-sm text-zinc-100 px-3 flex justify-center items-center bg-red-600 hover:bg-red-500 focus:bg-red-500 transition-colors rounded-md"
         >
           buscar
         </button>
@@ -97,10 +97,10 @@ function search() {
             <img
               src={`https://i.ytimg.com/vi/${song.vid}/0.jpg`}
               alt={song.title}
-              className="w-auto h-96 object-contain rounded-sm bg-black "
+              className="w-auto h-96 object-contain rounded-xl bg-black "
             />
           </figure>
-          <h2 className="text-zinc-300 text-lg text-center font-bold py-2">
+          <h2 className="text-zinc-200 text-lg text-center font-bold py-2">
             {song.title}
           </h2>
           <div className="flex flex-col gap-4 justify-center items-center py-6">
@@ -109,9 +109,9 @@ function search() {
             <button
               type="button"
               onClick={() => startDownload(song.vid, download)}
-              className="text-sm text-zinc-200 font-bold bg-header px-4 py-2"
+              className="text-sm text-zinc-100 rounded-md font-bold bg-red-600 px-4 py-2"
             >
-              Convertir
+              convertir
             </button>
             <Modal open={open} onClose={() => setOpen(false)}>
               <div className="text-center w-56">
@@ -129,9 +129,9 @@ function search() {
                   target="_blank"
                   rel="noreferrer"
                   onClick={() => setOpen(false)}
-                  className="text-sm text-zinc-100 font-bold bg-header px-4 py-2"
+                  className="rounded-md text-sm text-zinc-100 font-bold bg-red-600 px-4 py-2"
                 >
-                  Descargar mp3
+                  Descargar .mp3
                 </a>
               </div>
             </Modal>
