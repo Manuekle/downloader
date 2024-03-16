@@ -7,7 +7,7 @@ function search() {
   const [song, setSong] = useState([])
   const [mp3, setMp3] = useState([])
   const [open, setOpen] = useState(false)
-  // console.log(song)
+  const [loading, setLoading] = useState(false)
   const postMusic = async () => {
     const data = new FormData()
     data.append("k_query", link)
@@ -21,10 +21,22 @@ function search() {
           },
         }
       )
-      setSong(response.data)
-      setMp3(response.data.links.mp3.mp3128)
+      if (response.data.page === "detail") {
+        setLoading(true)
+        setTimeout(() => {
+          setSong(response.data)
+          setMp3(response.data.links.mp3.mp3128)
+          setLoading(false)
+        }, 2000)
+      }
+      if (response.data.page === "search") {
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+        }, 2000)
+      }
     } catch (error) {
-      return error
+      setLoading(false)
     }
   }
   const [texts, setTexts] = useState("")
@@ -84,60 +96,63 @@ function search() {
           buscar
         </button>
       </span>
-      {song.page === "search" || song.c_status === "FAILED" ? (
-        <span>
+
+      {loading ? (
+        <span className="h-96 flex justify-center items-center">
           <h1 className="text-zinc-200 font-bold text-xl text-center">
-            Ingrese un link de youtube válido
+            Buscando...
           </h1>
         </span>
-      ) : null}
-      {song.page === "detail" ? (
-        <section>
-          <figure className="flex justify-center py-8">
-            <img
-              src={`https://i.ytimg.com/vi/${song.vid}/0.jpg`}
-              alt={song.title}
-              className="w-auto h-96 object-contain rounded-xl bg-black "
-            />
-          </figure>
-          <h2 className="text-zinc-200 text-lg text-center font-bold py-2">
-            {song.title}
-          </h2>
-          <div className="flex flex-col gap-4 justify-center items-center py-6">
-            <span className="text-zinc-200">Archivo: {texts}</span>
-            <span className="text-zinc-200">Tamaño: {sizes}</span>
-            <button
-              type="button"
-              onClick={() => startDownload(song.vid, download)}
-              className="text-sm text-zinc-100 rounded-md font-bold bg-red-600 px-4 py-2"
-            >
-              convertir
-            </button>
-            <Modal open={open} onClose={() => setOpen(false)}>
-              <div className="text-center w-56">
-                {/* <Trash size={56} className="mx-auto text-red-500" /> */}
-                <div className="mx-auto my-4 w-48">
-                  <h3 className="text-lg font-black text-gray-800">
-                    Descargar
-                  </h3>
-                  <p className="text-sm text-gray-500">
-                    Se ha generado el link de descarga
-                  </p>
-                </div>
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => setOpen(false)}
-                  className="rounded-md text-sm text-zinc-100 font-bold bg-red-600 px-4 py-2"
+      ) : (
+        <>
+          {song.page === "detail" ? (
+            <section>
+              <figure className="flex justify-center py-8">
+                <img
+                  src={`https://i.ytimg.com/vi/${song.vid}/0.jpg`}
+                  alt={song.title}
+                  className="w-auto h-96 object-contain rounded-xl bg-black "
+                />
+              </figure>
+              <h2 className="text-zinc-200 text-lg text-center font-bold py-2">
+                {song.title}
+              </h2>
+              <div className="flex flex-col gap-4 justify-center items-center py-6">
+                <span className="text-zinc-200">Archivo: {texts}</span>
+                <span className="text-zinc-200">Tamaño: {sizes}</span>
+                <button
+                  type="button"
+                  onClick={() => startDownload(song.vid, download)}
+                  className="text-sm text-zinc-100 rounded-md font-bold bg-red-600 px-4 py-2"
                 >
-                  Descargar .mp3
-                </a>
+                  convertir
+                </button>
+                <Modal open={open} onClose={() => setOpen(false)}>
+                  <div className="text-center w-56">
+                    <div className="mx-auto my-4 w-48">
+                      <h3 className="text-lg font-black text-gray-800">
+                        Descargar
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        Se ha generado el link de descarga
+                      </p>
+                    </div>
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={() => setOpen(false)}
+                      className="rounded-md text-sm text-zinc-100 font-bold bg-red-600 px-4 py-2"
+                    >
+                      Descargar .mp3
+                    </a>
+                  </div>
+                </Modal>
               </div>
-            </Modal>
-          </div>
-        </section>
-      ) : null}
+            </section>
+          ) : null}
+        </>
+      )}
     </>
   )
 }
