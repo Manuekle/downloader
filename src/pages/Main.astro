@@ -1,0 +1,22 @@
+---
+// import fetch from "../utils/fetch.js";
+import Search from "../components/search";
+---
+
+<section class="flex flex-col gap-4">
+  <p class="text-center text-2xl font-bold text-zinc-200">
+    Descargar musica de youtube
+  </p>
+  <Search client:load />
+  <article class="pt-12">
+    <h1 class="text-zinc-200">Instrucciones</h1>
+    <ul>
+      <li class="text-zinc-200">
+        1. Ingrese el link de youtube en el campo de busqueda
+      </li>
+      <li class="text-zinc-200">2. Haga click en buscar</li>
+      <li class="text-zinc-200">3. Espere a que el sistema procese el video</li>
+      <li class="text-zinc-200">4. Haga click en descargar</li>
+    </ul>
+  </article>
+</section>
