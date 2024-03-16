@@ -4,13 +4,16 @@ import Modal from "./modal"
 
 function search() {
   const [link, setLink] = useState("") // link de la música
+  const [linkTest, setLinkTest] = useState(
+    "https://www.youtube.com/watch?v=Ao81ziiXHhs"
+  ) // link de la música
   const [song, setSong] = useState([])
   const [mp3, setMp3] = useState([])
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const postMusic = async () => {
     const data = new FormData()
-    data.append("k_query", link)
+    data.append("k_query", linkTest)
     try {
       const response = await axios.post(
         "https://www.y2mate.com/mates/en931/analyzeV2/ajax",
@@ -22,11 +25,11 @@ function search() {
         }
       )
       if (response.data.page === "detail") {
-        setLoading(true)
+        // setLoading(true)
         setTimeout(() => {
           setSong(response.data)
           setMp3(response.data.links.mp3.mp3128)
-          setLoading(false)
+          // setLoading(false)
         }, 2000)
       }
       if (response.data.page === "search") {
@@ -72,10 +75,16 @@ function search() {
   }
 
   useEffect(() => {
-    if (mp3) {
-      info()
+    info()
+    // if (mp3) {
+    // }
+    // if (link === "") {
+    //   setSong([])
+    // }
+    if (linkTest !== "") {
+      postMusic()
     }
-  }, [mp3])
+  }, [mp3, link, linkTest])
 
   return (
     <>
