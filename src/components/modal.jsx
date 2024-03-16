@@ -8,7 +8,6 @@ export default function modal({ open, onClose, children }) {
         ${open ? "visible bg-black/20" : "invisible"}
       `}
     >
-      {/* modal */}
       <div
         onClick={(e) => e.stopPropagation()}
         className={`
